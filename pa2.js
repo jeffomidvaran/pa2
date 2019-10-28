@@ -92,10 +92,12 @@ function installModel(modelData) {
      gl.bufferData(gl.ARRAY_BUFFER, modelData.vertexPositions, gl.STATIC_DRAW);
      gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
      gl.enableVertexAttribArray(a_coords_loc);
+
      gl.bindBuffer(gl.ARRAY_BUFFER, a_normal_buffer);
      gl.bufferData(gl.ARRAY_BUFFER, modelData.vertexNormals, gl.STATIC_DRAW);
      gl.vertexAttribPointer(a_normal_loc, 3, gl.FLOAT, false, 0, 0);
      gl.enableVertexAttribArray(a_normal_loc);
+     
      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,index_buffer);
      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, modelData.indices, gl.STATIC_DRAW);
 }
@@ -105,18 +107,26 @@ function installModel(modelData) {
 function initGL() {
     var prog = createProgram(gl,"vshader-source","fshader-source");
     gl.useProgram(prog);
+
     a_coords_loc =  gl.getAttribLocation(prog, "a_coords");
     a_normal_loc =  gl.getAttribLocation(prog, "a_normal");
+
     u_modelview = gl.getUniformLocation(prog, "modelview");
     u_projection = gl.getUniformLocation(prog, "projection");
+
+
     u_normalMatrix =  gl.getUniformLocation(prog, "normalMatrix");
     u_lightPosition=  gl.getUniformLocation(prog, "lightPosition");
+
+
     u_diffuseColor =  gl.getUniformLocation(prog, "diffuseColor");
     u_specularColor =  gl.getUniformLocation(prog, "specularColor");
     u_specularExponent = gl.getUniformLocation(prog, "specularExponent");
+
     u_ambient = gl.getUniformLocation(prog, "ambient");
     u_diffuse = gl.getUniformLocation(prog, "diffuse");
     u_specular = gl.getUniformLocation(prog, "specular");
+
 
     a_coords_buffer = gl.createBuffer();
     a_normal_buffer = gl.createBuffer();
