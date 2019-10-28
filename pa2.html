@@ -16,18 +16,6 @@
 
 <!-- vertex shader -->
 <script type="x-shader/x-vertex" id="vshader-source">
-
-    /* 
-        TODO: 
-        Vertex Shader computes the coordinates for all the vertices which are being drawn.
-        Fragment Shader computes the color for those vertices.
-
-        You can also pass variables from the vertex shader to the fragment shader.
-        Look at pa2.js to see what attributes and uniforms are being transferred to both 
-        shaders. Write the code in both the shaders appropriately.
-    */
-
-
     attribute vec3 a_coords;
     attribute vec3 a_normal;
 
@@ -41,24 +29,20 @@
     uniform vec3 specularColor;
     uniform float specularExponent;
 
-    // bool values to turn on/off light (init to 0)
     uniform int ambient;
     uniform int diffuse;       
     uniform int specular; 
 
-    attribute vec4 aVertexColor;
     varying vec4 v_color; 
-
 
     void main(void){
         vec4 coords = vec4(a_coords, 1.0);
         vec4 eyeCoords = modelview * coords; 
         gl_Position = projection * eyeCoords; 
 
-
-    // #############################################
-    // ######## DEFINE N,L,R,V ######################## 
-    // #############################################
+        // #######################################################################
+        // ######## DEFINE N,L,R,V ############################################### 
+        // #######################################################################
         vec3 N, L, R, V; 
 
         N = normalize( normalMatrix * a_normal);
@@ -71,48 +55,24 @@
 
         R = -reflect(L,N);
         V = normalize( -eyeCoords.xyz); 
-    // ************** END ************************** 
 
 
-
-
-    // #############################################
-    // ######## DEFINE MAIN LIGHT ################## 
-    // #############################################
-        if( dot(L,N) <= 0.0){
-            v_color = vec4(0,0,0,1); 
-        }else{
-            // 0.8 is diffuse intensity of light
-            vec3 color = 0.8*dot(L,N) * diffuseColor.rgb;  
-            if (dot(R,V) > 0.0){
-                // 0.4 is specular intensity of light
-                color += 0.4*pow(dot(R,V),specularExponent) * specularColor; 
-            }
-            v_color = vec4(color, diffuseColor.a);
-        }
-
-    // ************** END ************************** 
-
-
-
-
-
-    // #############################################
-    // ###### SET LIGHTING OTHER LIGHTING TYPES ####
-    // #############################################
+        // #######################################################################
+        // ############## Lighting ############################################### 
+        // #######################################################################
 
         float ka = 0.1; 
         float kd = 0.8;
         float ks = 0.4;
-        float n = 3000.0; 
         vec4 ambientLight = ka * diffuseColor;
-        vec4 diffuseLight = kd * diffuseColor * vec4(max( N * L, vec3(0.0,0.0,0.0) ), 0); 
-        vec4 specularLight = ks * 
-                             vec4(specularColor.xyz, 1) * 
-                             pow(vec4(max( R * V, vec3(0.0,0.0,0.0) ), 0), vec4(n,n,n,n));
+        vec4 diffuseLight = kd * diffuseColor * max(dot(N,L), 0.0); 
 
-        
-        //  ADD LIGHTING CHANGE TO V_COLOR
+        vec4 specularLight= ks * 
+                            vec4(specularColor.xyz, 1) * 
+                            pow(max(dot(R,V), 0.0), specularExponent); 
+
+        v_color = vec4(0,0,0,1);
+
         if(ambient == 1){
             v_color = v_color + ambientLight;
         }
@@ -124,9 +84,6 @@
         if(specular == 1){
             v_color = v_color + specularLight; 
         }
-
-    // ************** END ************************** 
-        
     }
 
 </script>
@@ -142,25 +99,11 @@
        precision mediump float;
     #endif
 
-    // TODO: Your code goes here.
-    // Fragment Shader computes the color for those vertices.
-    // You can also pass variables from the vertex shader to the fragment shader.
-    // Look into the pa2.js and see what attributes and uniforms are being transferred to both the
-    // shaders. Write the code in both the shaders appropriately.
-    // Use the diffuse_color to compute both ambient and diffuse lighting.
-    // Use the specular_color to compute the specular lighting.
-    // Use K_a = 0.1, K_d = 0.8, K_s = 0.4.
-
-
-    varying vec4 v_color; 
-
-    void main(void){
+    varying vec4 v_color;
+    void main(void) {
         gl_FragColor = v_color;
-    }
-
-
-
-
+    }    
+        
 </script>
 
 <script src="gl-matrix-min.js"></script>
