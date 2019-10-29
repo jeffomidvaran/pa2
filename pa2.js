@@ -26,11 +26,13 @@ var normalMatrix = mat3.create();  // matrix, derived from modelview matrix, for
 var rotator;                       // A TrackballRotator to implement rotation by mouse.
 
 var lightPositions = [             // values for light position, selected by popup menu
-    [0,0,0,1], 
-    [0,0,1,0], 
-    [0,1,0,0], 
-    [0,0,-10,1], 
-    [2,3,5,0],
+    [0,0,0,1],   // View point light
+    [0,0,1,0],   // Directional into screen 
+    [0,1,0,0],   // Directional from above
+    [0,0,-10,1], // On z-axis, close to object
+    [2,3,5,0],   // Directional from upper right  
+    [0,-1,0,0],  // Bottom 
+    [-1,0,0,0],  // Left of the scene
 ];
 
 var objects = [                     // Objects for display, selected by popup menu
