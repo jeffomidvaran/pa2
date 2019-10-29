@@ -110,6 +110,12 @@
 <script src="trackball-rotator.js"></script>
 <script src="model.js"></script>
 <script src="pa2.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+  <script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 
 
@@ -165,7 +171,16 @@ Student ID: 32332249 <br/>
 </div>
 
 <p>
-    TO DO: Write your description here
+    <!-- 
+        TO DO: 
+        What is happening when the user changes the specular exponent value? 
+        Why is this happening? 
+        Describe this no more than 3 lines 
+    -->
+
+    The amount of the specular light that the camera receives is controlled by raising the cosine of the angle between the viewing direction and the reflection direction to a power of $n$. 
+    As the power of $n$ approaches infinity, cosine tapers off and amount of specular light becomes smaller (less more focused light).
+    Conversely the amount of specular light that the camera will receives will be at its maximum value when $n = 0$. 
 </p>
 
 </body>
